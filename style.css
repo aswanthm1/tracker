@@ -1,0 +1,172 @@
+:root {
+    --bg: #f8f9fa;
+    --white: #ffffff;
+    --surface: #f2f2f2;
+    --border: #e5e5e5;
+    --text: #121212;
+    --muted: #666666;
+    --soft: #a0a0a0;
+    --accent: #121212;
+    --accent2: #4f46e5;
+    --danger: #ef4444;
+    --low: #10b981;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Onboarding */
+#onboarding {
+    position: fixed; inset: 0; background: var(--white);
+    display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+
+.ob-card { width: 100%; max-width: 380px; text-align: center; padding: 20px; }
+
+.ob-icon {
+    width: 56px; height: 56px; background: var(--text);
+    margin: 0 auto 32px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.ob-icon::after {
+    content: ''; width: 18px; height: 18px; border: 2.5px solid white;
+    border-radius: 3px; transform: rotate(45deg);
+}
+
+.ob-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+
+.ob-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; line-height: 1.5; }
+
+/* Form Elements */
+.name-input, .form-control {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 12px 16px; font-family: inherit;
+    font-size: 15px; outline: none; transition: 0.2s;
+}
+
+.name-input:focus, .form-control:focus {
+    border-color: var(--text); background: var(--white);
+}
+
+.start-btn, .add-btn {
+    width: 100%; padding: 14px; background: var(--text); color: white;
+    border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer;
+    margin-top: 12px; transition: opacity 0.2s;
+}
+
+.start-btn:hover, .add-btn:hover { opacity: 0.9; }
+
+/* Dashboard Layout */
+#dashboard { display: none; }
+
+.topbar {
+    height: 64px; background: var(--white); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; position: sticky; top: 0; z-index: 100;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+
+.logo-small {
+    width: 28px; height: 28px; background: var(--text); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.logo-small::after {
+    content: ''; width: 8px; height: 8px; border: 2px solid white;
+    border-radius: 1px; transform: rotate(45deg);
+}
+
+.topbar-title { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 18px; }
+
+.avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--text);
+    color: white; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+}
+
+.main-content { max-width: 760px; margin: 0 auto; padding: 40px 20px; }
+
+/* Hero & Progress */
+.hero {
+    background: var(--white); border: 1px solid var(--border); border-radius: 20px;
+    padding: 24px 32px; display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px; box-shadow: var(--shadow);
+}
+
+.hero h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; margin-bottom: 4px; }
+
+.ring-wrap { position: relative; width: 80px; height: 80px; }
+
+.ring-wrap svg { transform: rotate(-90deg); width: 80px; height: 80px; }
+
+.ring-bg { fill: none; stroke: var(--surface); stroke-width: 6; }
+
+.ring-fill {
+    fill: none; stroke: var(--text); stroke-width: 6; stroke-linecap: round;
+    stroke-dasharray: 251; stroke-dashoffset: 251; transition: 0.8s ease;
+}
+
+.ring-pct { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+
+.stat-card { background: var(--white); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius); }
+
+.stat-label { font-size: 11px; text-transform: uppercase; color: var(--muted); font-weight: 600; display: block; margin-bottom: 4px; }
+
+.stat-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 28px; font-weight: 700; }
+
+/* Panels & Cards */
+.add-panel { background: var(--white); border: 1px solid var(--border); padding: 24px; border-radius: 20px; margin-bottom: 32px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+
+.filter-bar { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; }
+
+.filter-tab {
+    padding: 8px 16px; border: 1px solid var(--border); background: var(--white);
+    border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s;
+}
+
+.filter-tab.active { background: var(--text); color: white; border-color: var(--text); }
+
+.task-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px; display: flex; align-items: center; gap: 16px; margin-bottom: 10px;
+    transition: 0.2s;
+}
+
+.task-card:hover { border-color: var(--soft); transform: translateY(-1px); }
+
+.checkbox { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); cursor: pointer; flex-shrink: 0; }
+
+.checkbox.on { background: var(--text); border-color: var(--text); }
+
+.priority-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; margin-top: 4px; display: inline-block; }
+
+.priority-tag.high { background: #fee2e2; color: var(--danger); }
+
+.priority-tag.medium { background: #fef3c7; color: #d97706; }
+
+.priority-tag.low { background: #dcfce7; color: #059669; }
+
+.del-btn { background: none; border: none; cursor: pointer; color: var(--soft); font-size: 18px; }
+
+.del-btn:hover { color: var(--danger); }
+
+@media (max-width: 600px) {
+    .stats-grid, .form-row { grid-template-columns: 1fr; }
+}

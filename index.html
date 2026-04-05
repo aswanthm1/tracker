@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f6f3;
+    --white: #ffffff;
+    --surface2: #f2f1ee;
+    --border: #e8e6e1;
+    --border2: #d5d2ca;
+    --text: #1a1917;
+    --muted: #8a8780;
+    --soft: #b5b2ab;
+    --accent: #1a1917; /* Changed to dark tech-neutral */
+    --accent-light: #f2f1ee;
+    --accent2: #6366f1;
+    --accent2-light: #eef2ff;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --warn: #f59e0b;
+    --warn-light: #fffbeb;
+    --high: #ef4444;
+    --medium: #f59e0b;
+    --low: #10b981;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 4px 12px rgba(0,0,0,0.05);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;letter-spacing: -0.01em;}
+
+  /* ═══ ONBOARDING ═══ */
+  #onboarding{
+    position:fixed;inset:0;background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    z-index:1000;padding:24px;
+  }
+  .ob-card{width:100%;max-width:400px;text-align:center;}
+
+  /* Clean Geometric Logo instead of Emoji */
+  .ob-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--text);
+    margin: 0 auto 32px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .ob-icon::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border: 3px solid white;
+    border-radius: 4px;
+    transform: rotate(45deg);
+  }
+
+  .ob-title{
+    font-family:'Bricolage Grotesque', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .ob-sub{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:32px;}
+
+  .name-input{
+    width:100%;background:var(--surface2);
+    border:1px solid var(--border);border-radius:var(--radius-sm);
+    padding:14px; font-family:inherit; font-size:16px; outline:none; text-align:center;
+    transition: all 0.2s;
+  }
+  .name-input:focus{border-color:var(--text);background:var(--white);box-shadow: 0 0 0 4px rgba(0,0,0,0.03);}
+
+  .start-btn{
+    width:100%;padding:14px;background:var(--text);color:white;
+    border:none;border-radius:var(--radius-sm);
+    font-family:inherit;font-size:15px;font-weight:600;
+    cursor:pointer;margin-top: 12px;
+  }
+
+  /* ═══ DASHBOARD ═══ */
+  #dashboard{display:none;}
+
+  .topbar{
+    background:var(--white);border-bottom:1px solid var(--border);
+    padding:0 24px;height:60px;
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:50;
+  }
+  .logo-small {
+    width: 28px;
+    height: 28px;
+    background: var(--text);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo-small::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border: 2px solid white;
+    border-radius: 1px;
+    transform: rotate(45deg);
+  }
+  .topbar-title{font-family:'Bricolage Grotesque', sans-serif; font-size:18px; font-weight: 600; margin-left: 10px;}
+  
+  .avatar{
+    width:32px;height:32px;border-radius:50%;background:var(--text);color:white;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight: 600;
+  }
+
+  .main{max-width:800px;margin:0 auto;padding:40px 20px;}
+
+  .hero h2{font-family:'Bricolage Grotesque', sans-serif; font-size: 28px; font-weight: 700;}
+  
+  .sc-num{font-family:'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 32px;}
+
+  /* ═══ REST OF STYLES (Kept for functionality) ═══ */
+  .hero{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;box-shadow:var(--shadow-sm);}
+  .ring-wrap{position:relative;width:80px;height:80px;}
+  .ring-wrap svg{transform:rotate(-90deg);width:80px;height:80px;}
+  .ring-bg{fill:none;stroke:var(--border);stroke-width:6;}
+  .ring-fill{fill:none;stroke:var(--text);stroke-width:6;stroke-linecap:round;stroke-dasharray:251;stroke-dashoffset:251;transition:stroke-dashoffset 0.8s ease;}
+  .ring-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+  .sc{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow-sm);}
+  .sc-label{font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);font-weight:600;margin-bottom:4px;}
+  .add-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:18px;}
+  .fc{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-family:inherit;font-size:14px;outline:none;}
+  .fc:focus{border-color:var(--text);background:var(--white);}
+  .add-btn{width:100%;padding:12px;background:var(--text);color:white;border:none;border-radius:var(--radius-sm);font-weight:600;cursor:pointer;margin-top:10px;}
+  .tcard{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition: 0.2s;}
+  .tcard:hover{border-color:var(--border2);transform: translateY(-1px); box-shadow: var(--shadow);}
+  .chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--border2);cursor:pointer;}
+  .chk.on{background:var(--text);border-color:var(--text);}
+  .pb{font-size:10px;font-weight:700;text-transform:uppercase;padding:2px 8px;border-radius:4px;}
+  .pb.high{background:var(--danger-light);color:var(--danger);}
+  .pb.medium{background:var(--warn-light);color:var(--warn);}
+  .pb.low{background:var(--accent-light);color:var(--text);}
+  .ibtn{border:none;background:none;cursor:pointer;opacity:0.4;}
+  .ibtn:hover{opacity:1;}
+  .ftab{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-size:13px;}
+  .ftab.active{background:var(--text);color:white;border-color:var(--text);}
+  @media(max-width:520px){.frow,.stats{grid-template-columns:1fr;}.hero{flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+
+<div id="onboarding">
+  <div class="ob-card">
+    <div class="ob-icon"></div> <h1 class="ob-title">What's your name?</h1>
+    <p class="ob-sub">Personalize your tracking experience.</p>
+    <input type="text" id="nameInput" class="name-input" placeholder="Your name" maxlength="30" autofocus>
+    <button class="start-btn" onclick="startDashboard()">Enter Workspace</button>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;">
+      <div class="logo-small"></div> <span class="topbar-title">Activity Tracker</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="avatar" id="userAvatar">?</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="hero">
+      <div>
+        <h2 id="heroH">Welcome back</h2>
+        <p id="heroP" style="color:var(--muted); font-size: 14px;">Let's see what is on the schedule today.</p>
+      </div>
+      <div class="ring-wrap">
+        <svg viewBox="0 0 90 90"><circle class="ring-bg" cx="45" cy="45" r="40"/><circle class="ring-fill" id="ringF" cx="45" cy="45" r="40"/></svg>
+        <div class="ring-pct" id="ringPct">0%</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="sc"><div class="sc-label">Total</div><div class="sc-num" id="stT">0</div></div>
+      <div class="sc"><div class="sc-label">Done</div><div class="sc-num" id="stD" style="color:var(--accent2)">0</div></div>
+      <div class="sc"><div class="sc-label">Pending</div><div class="sc-num" id="stL">0</div></div>
+    </div>
+
+    <div class="add-panel">
+      <input type="text" id="taskInput" class="fc" placeholder="New activity description..." style="margin-bottom:12px">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <input type="date" id="dueDate" class="fc">
+        <select id="priority" class="fc">
+          <option value="low">Low Priority</option>
+          <option value="medium" selected>Medium Priority</option>
+          <option value="high">High Priority</option>
+        </select>
+      </div>
+      <button class="add-btn" onclick="addTask()">Create Activity</button>
+    </div>
+
+    <div style="display:flex; gap:8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;">
+        <button class="ftab active" onclick="setF('all',this)">All</button>
+        <button class="ftab" onclick="setF('pending',this)">Pending</button>
+        <button class="ftab" onclick="setF('done',this)">Completed</button>
+    </div>
+
+    <div class="tlist" id="taskList"></div>
+  </div>
+</div>
+
+<script>
+// (Script logic remains the same as your original to ensure functionality)
+let userName='', tasks=JSON.parse(localStorage.getItem('at_tasks')||'[]'), filt='all';
+const CIRC=2*Math.PI*40;
+
+function startDashboard(){
+  const inp=document.getElementById('nameInput');
+  if(!inp.value.trim()) return;
+  userName=inp.value.trim();
+  localStorage.setItem('at_uname',userName);
+  document.getElementById('onboarding').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('userAvatar').textContent=userName[0].toUpperCase();
+  render();
+}
+
+function addTask(){
+  const name=document.getElementById('taskInput').value;
+  if(!name) return;
+  tasks.unshift({id:Date.now(), name, priority:document.getElementById('priority').value, date:document.getElementById('dueDate').value, done:false});
+  document.getElementById('taskInput').value='';
+  render();
+}
+
+function render(){
+  const list=document.getElementById('taskList');
+  list.innerHTML='';
+  let shown = tasks.filter(t => filt==='all' ? true : (filt==='done' ? t.done : !t.done));
+  
+  shown.forEach(t => {
+    const card = document.createElement('div');
+    card.className = `tcard ${t.done?'done-c':''}`;
+    card.innerHTML = `
+      <div class="chk ${t.done?'on':''}" onclick="tog(${t.id})"></div>
+      <div style="flex:1">
+        <div style="font-size:14px; font-weight:500; ${t.done?'text-decoration:line-through; color:var(--soft)':''}">${t.name}</div>
+        <span class="pb ${t.priority}">${t.priority}</span>
+      </div>
+      <button class="ibtn" onclick="del(${t.id})">✕</button>
+    `;
+    list.appendChild(card);
+  });
+  updateStats();
+}
+
+function tog(id){
+  tasks = tasks.map(t => t.id===id ? {...t, done:!t.done} : t);
+  render();
+}
+
+function del(id){
+  tasks = tasks.filter(t => t.id!==id);
+  render();
+}
+
+function setF(f, btn){
+  filt=f;
+  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function updateStats(){
+  const total=tasks.length, done=tasks.filter(t=>t.done).length;
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('stT').textContent=total;
+  document.getElementById('stD').textContent=done;
+  document.getElementById('stL').textContent=total-done;
+  document.getElementById('ringPct').textContent=pct+'%';
+  document.getElementById('ringF').style.strokeDashoffset=CIRC-(pct/100)*CIRC;
+  localStorage.setItem('at_tasks',JSON.stringify(tasks));
+}
+</script>
+</body>
+</html>
